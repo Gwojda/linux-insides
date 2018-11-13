@@ -64,7 +64,8 @@ which is `65520` bytes past the first megabyte. Since only one megabyte is acces
 
 Ok, now we know a little bit about real mode and memory addressing in this mode. Let's get back to discussing register values after reset.
 
-The `CS` register consists of two parts: the visible segment selector, and the hidden base address. While the base address is normally formed by multiplying the segment selector value by 16, during a hardware reset the segment selector in the CS register is loaded with `0xf000` and the base address is loaded with `0xffff0000`; the processor uses this special base address until `CS` is changed.
+The `CS` register consists of two parts: the visible segment selector, and the hidden base address. While the base address is normally formed by multiplying the segment selector value by 16, during a hardware reset the segment selector in the CS register is loaded with `0xf000` and the base address is loaded with `0xffff0000`; until you execute your first long jump, giving you access to the high address space (while rejecting access to anything lower than 0xFFF00000 - until you execute a long jump).)
+
 
 The starting address is formed by adding the base address to the value in the EIP register:
 
@@ -182,7 +183,7 @@ In general, real mode's memory map is as follows:
 0x000F0000 - 0x000FFFFF - System BIOS
 ```
 
-In the beginning of this post, I wrote that the first instruction executed by the CPU is located at address `0xFFFFFFF0`, which is much larger than `0xFFFFF` (1MB). How can the CPU access this address in real mode? The answer is in the [coreboot](https://www.coreboot.org/Developer_Manual/Memory_map) documentation:
+In the beginning of this post, I wrote that the first instruction executed by the CPU is located at address `0xFFFFFFF0`, which is much larger than `0xFFFFF` (1MB).  All the address are detailled in the [coreboot] https://www.coreboot.org/Developer_Manual/Memory_map) documentation:
 
 ```
 0xFFFE_0000 - 0xFFFF_FFFF: 128 kilobyte ROM mapped into address space
